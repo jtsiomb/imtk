@@ -12,6 +12,7 @@ CFLAGS = -std=gnu89 -pedantic -Wall -g -Isrc -I$(PREFIX)/include
 LDFLAGS = -L$(PREFIX)/lib $(libgl) -lm
 
 ifeq ($(shell uname -s), Darwin)
+	CFLAGS += -DGL_SILENCE_DEPRECATION
 	libgl = -framework OpenGL -framework GLUT
 else
 	libgl = -lGL -lGLU -lglut

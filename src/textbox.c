@@ -13,6 +13,15 @@ This is free software, released under the 2-clause BSD license.
 #define TEXTBOX_SIZE	100
 #define TEXTBOX_HEIGHT	20
 
+#ifdef __APPLE__
+/* macOS GLUT sends Del for backspace -\_(-_-)_/- */
+#define KEY_BACKSPACE	127
+#define KEY_DELETE		'\b'
+#else
+#define KEY_BACKSPACE	'\b'
+#define KEY_DELETE		127
+#endif
+
 static void draw_textbox(int id, char *text, int cursor, int x, int y, int over);
 
 
@@ -68,7 +77,7 @@ void imtk_textbox(int id, char *textbuf, size_t buf_sz, int x, int y)
 				key &= 0xff;
 
 				switch(key) {
-				case '\b':
+				case KEY_BACKSPACE:
 					if(cursor > 0) {
 						if(cursor == len) {
 							textbuf[--cursor] = 0;
@@ -80,7 +89,7 @@ void imtk_textbox(int id, char *textbuf, size_t buf_sz, int x, int y)
 					}
 					break;
 
-				case 127:	/* del */
+				case KEY_DELETE:
 					if(cursor < len) {
 						memmove(textbuf + cursor, textbuf + cursor + 1, len - cursor);
 						textbuf[--len] = 0;
